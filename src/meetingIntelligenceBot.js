@@ -167,7 +167,31 @@ function computeConfidenceScore(...coverageMaps) {
   return total === 0 ? 0 : Math.round((captured / total) * 100);
 }
 
-function createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage) {
+function createMissingHighlights(gaps) {
+  const meddpicc = gaps.meddpicc.map((gap) => gap.field);
+  const spin = gaps.spin.map((gap) => gap.field);
+  const summaryParts = [];
+
+  if (meddpicc.length > 0) {
+    summaryParts.push(`Missing MEDDPICC: ${meddpicc.join(", ")}.`);
+  }
+
+  if (spin.length > 0) {
+    summaryParts.push(`Missing SPIN: ${spin.join(", ")}.`);
+  }
+
+  if (summaryParts.length === 0) {
+    summaryParts.push("No missing MEDDPICC or SPIN elements detected.");
+  }
+
+  return {
+    meddpicc,
+    spin,
+    summary: summaryParts.join(" "),
+  };
+}
+
+function createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage, missingHighlights) {
   const coveredMeddpicc = Object.values(meddpiccCoverage).filter((f) => f.status === "captured").length;
   const coveredSpin = Object.values(spinCoverage).filter((f) => f.status === "captured").length;
 
@@ -176,6 +200,7 @@ function createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage) {
     `MEDDPICC coverage: ${coveredMeddpicc}/8.`,
     `SPIN coverage: ${coveredSpin}/4.`,
     risks.length ? `Open risks detected: ${risks.length}.` : "No immediate framework risks detected.",
+    missingHighlights.summary,
   ].join(" ");
 }
 
@@ -196,7 +221,8 @@ class MeetingIntelligenceBot {
 
     const risks = buildRisks(meddpiccCoverage, normalisedTranscript);
     const confidenceScore = computeConfidenceScore(meddpiccCoverage, spinCoverage);
-    const summary = createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage);
+    const missingHighlights = createMissingHighlights(gaps);
+    const summary = createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage, missingHighlights);
 
     return {
       summary,
@@ -205,6 +231,7 @@ class MeetingIntelligenceBot {
       meddpicc: meddpiccCoverage,
       spin: spinCoverage,
       gaps,
+      missingHighlights,
       risks,
       nextSteps: this.suggestNextSteps(gaps),
       evidenceTraceability: "All extracted items include sentence-level evidence from the transcript.",
