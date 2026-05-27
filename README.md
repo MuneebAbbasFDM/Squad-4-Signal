@@ -148,4 +148,5 @@ OPENAI_API_KEY=<your-key> npm run start:cli
 - `/help`
 - `/context {"opportunityId":"OPP-123","account":"Acme"}`
 - `/analyze <meeting transcript>`
+- `/plan <linkedin-profile-url>` (uses `legal_general_crm_notes_12m.xlsx` dummy data to return a MEDDPICC/SPIN meeting plan)
 - `/exit` (CLI mode only)
