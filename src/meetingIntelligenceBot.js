@@ -1,6 +1,7 @@
 "use strict";
 
 const { generateChatResponse, generateAnalysisInsights } = require("./aiEngine");
+const { buildCrmSummary } = require("./crmData");
 
 const MEDDPICC = {
   metrics: {
@@ -206,6 +207,42 @@ function createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage, m
   ].join(" ");
 }
 
+function createMeetingPlan(linkedinProfile) {
+  const crmSummary = buildCrmSummary(linkedinProfile);
+  const primaryChallenge = crmSummary.topChallenges[0] || "Discovery and delivery alignment risk.";
+  const primaryDecision = crmSummary.recentDecisions[0] || "No explicit decision trend captured.";
+  const primaryNextStep = crmSummary.likelyNextSteps[0] || "Confirm next-step owner and due date.";
+
+  return {
+    objective: `Prepare for next ${crmSummary.account} stakeholder meeting with structured MEDDPICC/SPIN discovery.`,
+    linkedinProfile,
+    crmSummary,
+    meddpiccPlan: {
+      metrics: `Quantify impact linked to: ${primaryChallenge}`,
+      economicBuyer: `Confirm budget authority and access path${crmSummary.stakeholder ? ` via ${crmSummary.stakeholder}` : ""}.`,
+      decisionCriteria: "Validate hiring-quality, speed, and compliance criteria.",
+      decisionProcess: "Map approval flow, timeline, and gate owners.",
+      paperProcess: "Confirm legal/procurement process and expected contract checkpoints.",
+      identifiedPain: `Probe urgency behind repeated challenge: ${primaryChallenge}`,
+      champion: "Identify who will actively advocate internally and why.",
+      competition: "Test whether incumbents, alternatives, or status quo are preferred.",
+    },
+    spinPlan: {
+      situation: `Current operating context from CRM notes: ${crmSummary.keyDiscussionPoints[0] || "Validate current hiring process and team constraints."}`,
+      problem: `Clarify root problem behind: ${primaryChallenge}`,
+      implication: "Quantify cost of delay on delivery timelines and stakeholder confidence.",
+      needPayoff: `Align expected value to likely action: ${primaryNextStep}`,
+    },
+    meetingAgenda: [
+      "Recap account context and confirm current priorities.",
+      "Run MEDDPICC discovery to close qualification gaps.",
+      "Run SPIN questions to deepen business impact and urgency.",
+      `Reconfirm or update latest decision trend: ${primaryDecision}`,
+      `Agree owner and date for next step: ${primaryNextStep}`,
+    ],
+  };
+}
+
 class MeetingIntelligenceBot {
   async analyzeMeeting({ transcript, crmContext = {} }) {
     if (!transcript || typeof transcript !== "string" || transcript.trim().length === 0) {
@@ -257,7 +294,7 @@ class MeetingIntelligenceBot {
     }
 
     if (message.trim() === "/help") {
-      return "Use /analyze <meeting transcript> to extract MEDDPICC/SPIN coverage and risks. Use /context <json> to attach CRM context.";
+      return "Use /analyze <meeting transcript> for analysis, /plan <linkedin-profile-url> for a MEDDPICC/SPIN meeting plan from legal_general_crm_notes_12m.xlsx data, and /context <json> to attach CRM context.";
     }
 
     if (message.trim().startsWith("/analyze")) {
@@ -267,6 +304,17 @@ class MeetingIntelligenceBot {
       }
       const analysis = await this.analyzeMeeting({ transcript, crmContext: state.crmContext || {} });
       return JSON.stringify(analysis, null, 2);
+    }
+
+    if (message.trim().startsWith("/plan")) {
+      const linkedinProfile = message.replace("/plan", "").trim();
+      if (!linkedinProfile) {
+        return "Please provide a LinkedIn profile URL after /plan so I can tailor the meeting plan.";
+      }
+      if (!/^https?:\/\/(www\.)?linkedin\.com\/.+/i.test(linkedinProfile)) {
+        return "Please provide a valid LinkedIn profile URL (for example: https://www.linkedin.com/in/example).";
+      }
+      return JSON.stringify(createMeetingPlan(linkedinProfile), null, 2);
     }
 
     const aiReply = await generateChatResponse(message, state.crmContext || {});

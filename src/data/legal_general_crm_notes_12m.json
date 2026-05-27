@@ -1,0 +1,305 @@
+{
+  "sourceFile": "legal_general_crm_notes_12m.xlsx",
+  "records": [
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-04-03",
+      "Meeting Type": "Quarterly Review",
+      "Key Discussion Points": "Discussed progress against open roles (Java, BA, DevOps) and alignment to delivery timelines.",
+      "Challenges Identified": "Delays in feedback from hiring stakeholders.",
+      "Decisions Made": "Increase cadence of delivery check-ins.",
+      "Next Steps": "Schedule follow-up with delivery team to validate requirements."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-01-09",
+      "Meeting Type": "Quarterly Review",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Gaps between CV evidence and required skill depth.",
+      "Decisions Made": "Increase cadence of delivery check-ins.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-12-15",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Discussed progress against open roles (Java, BA, DevOps) and alignment to delivery timelines.",
+      "Challenges Identified": "Market scarcity for mid-level DevOps profiles.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Submit updated shortlist within 48 hours."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-10-25",
+      "Meeting Type": "Delivery Check-in",
+      "Key Discussion Points": "Reviewed feedback from recent candidate interviews and hiring decisions.",
+      "Challenges Identified": "Gaps between CV evidence and required skill depth.",
+      "Decisions Made": "Increase cadence of delivery check-ins.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-09-05",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Reviewed candidate pipeline and quality of shortlisted profiles.",
+      "Challenges Identified": "Gaps between CV evidence and required skill depth.",
+      "Decisions Made": "Prioritise candidates with financial services experience.",
+      "Next Steps": "Submit updated shortlist within 48 hours."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-08-09",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Reviewed candidate pipeline and quality of shortlisted profiles.",
+      "Challenges Identified": "Gaps between CV evidence and required skill depth.",
+      "Decisions Made": "Prioritise candidates with financial services experience.",
+      "Next Steps": "Align on interview availability with hiring managers."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-08-03",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Reviewed feedback from recent candidate interviews and hiring decisions.",
+      "Challenges Identified": "Delays in feedback from hiring stakeholders.",
+      "Decisions Made": "Prioritise candidates with financial services experience.",
+      "Next Steps": "Refine CVs to better reflect project experience."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-07-07",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Market scarcity for mid-level DevOps profiles.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-06-13",
+      "Meeting Type": "Delivery Check-in",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Market scarcity for mid-level DevOps profiles.",
+      "Decisions Made": "Proceed with refined shortlist and stronger evidence mapping.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Becky Davis",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-06-04",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Delays in feedback from hiring stakeholders.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Submit updated shortlist within 48 hours."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-05-14",
+      "Meeting Type": "Pipeline Discussion",
+      "Key Discussion Points": "Reviewed feedback from recent candidate interviews and hiring decisions.",
+      "Challenges Identified": "Candidate availability misaligned with project timelines.",
+      "Decisions Made": "Proceed with refined shortlist and stronger evidence mapping.",
+      "Next Steps": "Submit updated shortlist within 48 hours."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-05-12",
+      "Meeting Type": "Pipeline Discussion",
+      "Key Discussion Points": "Reviewed feedback from recent candidate interviews and hiring decisions.",
+      "Challenges Identified": "Candidate availability misaligned with project timelines.",
+      "Decisions Made": "Simplify submission format to one-page evidence summaries.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-05-02",
+      "Meeting Type": "Pipeline Discussion",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Inconsistent stakeholder expectations across teams.",
+      "Decisions Made": "Increase cadence of delivery check-ins.",
+      "Next Steps": "Submit updated shortlist within 48 hours."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-04-23",
+      "Meeting Type": "Pipeline Discussion",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Market scarcity for mid-level DevOps profiles.",
+      "Decisions Made": "Proceed with refined shortlist and stronger evidence mapping.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-04-19",
+      "Meeting Type": "Stakeholder Sync",
+      "Key Discussion Points": "Aligned on upcoming project demand and expected ramp-up in Q3.",
+      "Challenges Identified": "Delays in feedback from hiring stakeholders.",
+      "Decisions Made": "Simplify submission format to one-page evidence summaries.",
+      "Next Steps": "Refine CVs to better reflect project experience."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-01-17",
+      "Meeting Type": "Stakeholder Sync",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Inconsistent stakeholder expectations across teams.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Align on interview availability with hiring managers."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-11-11",
+      "Meeting Type": "Stakeholder Sync",
+      "Key Discussion Points": "Discussed progress against open roles (Java, BA, DevOps) and alignment to delivery timelines.",
+      "Challenges Identified": "Delays in feedback from hiring stakeholders.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-09-26",
+      "Meeting Type": "Delivery Check-in",
+      "Key Discussion Points": "Reviewed feedback from recent candidate interviews and hiring decisions.",
+      "Challenges Identified": "Candidate availability misaligned with project timelines.",
+      "Decisions Made": "Proceed with refined shortlist and stronger evidence mapping.",
+      "Next Steps": "Refine CVs to better reflect project experience."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-09-02",
+      "Meeting Type": "Delivery Check-in",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Inconsistent stakeholder expectations across teams.",
+      "Decisions Made": "Proceed with refined shortlist and stronger evidence mapping.",
+      "Next Steps": "Align on interview availability with hiring managers."
+    },
+    {
+      "Client Name": "Gary Manser",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-08-17",
+      "Meeting Type": "Pipeline Discussion",
+      "Key Discussion Points": "Discussed progress against open roles (Java, BA, DevOps) and alignment to delivery timelines.",
+      "Challenges Identified": "Market scarcity for mid-level DevOps profiles.",
+      "Decisions Made": "Simplify submission format to one-page evidence summaries.",
+      "Next Steps": "Schedule follow-up with delivery team to validate requirements."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-05-16",
+      "Meeting Type": "Pipeline Discussion",
+      "Key Discussion Points": "Reviewed candidate pipeline and quality of shortlisted profiles.",
+      "Challenges Identified": "Delays in feedback from hiring stakeholders.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Schedule follow-up with delivery team to validate requirements."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-04-19",
+      "Meeting Type": "Pipeline Discussion",
+      "Key Discussion Points": "Discussed progress against open roles (Java, BA, DevOps) and alignment to delivery timelines.",
+      "Challenges Identified": "Gaps between CV evidence and required skill depth.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2026-02-13",
+      "Meeting Type": "Quarterly Review",
+      "Key Discussion Points": "Discussed progress against open roles (Java, BA, DevOps) and alignment to delivery timelines.",
+      "Challenges Identified": "Inconsistent stakeholder expectations across teams.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Submit updated shortlist within 48 hours."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-10-26",
+      "Meeting Type": "Quarterly Review",
+      "Key Discussion Points": "Reviewed feedback from recent candidate interviews and hiring decisions.",
+      "Challenges Identified": "Candidate availability misaligned with project timelines.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Provide weekly pipeline updates to stakeholders."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-10-07",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Reviewed candidate pipeline and quality of shortlisted profiles.",
+      "Challenges Identified": "Gaps between CV evidence and required skill depth.",
+      "Decisions Made": "Prioritise candidates with financial services experience.",
+      "Next Steps": "Schedule follow-up with delivery team to validate requirements."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-09-16",
+      "Meeting Type": "Quarterly Review",
+      "Key Discussion Points": "Reviewed candidate pipeline and quality of shortlisted profiles.",
+      "Challenges Identified": "Candidate availability misaligned with project timelines.",
+      "Decisions Made": "Proceed with refined shortlist and stronger evidence mapping.",
+      "Next Steps": "Refine CVs to better reflect project experience."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-08-27",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Discussed challenges in sourcing niche DevOps skillsets.",
+      "Challenges Identified": "Market scarcity for mid-level DevOps profiles.",
+      "Decisions Made": "Increase cadence of delivery check-ins.",
+      "Next Steps": "Align on interview availability with hiring managers."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-08-07",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Reviewed candidate pipeline and quality of shortlisted profiles.",
+      "Challenges Identified": "Inconsistent stakeholder expectations across teams.",
+      "Decisions Made": "Simplify submission format to one-page evidence summaries.",
+      "Next Steps": "Schedule follow-up with delivery team to validate requirements."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-06-15",
+      "Meeting Type": "Project Update",
+      "Key Discussion Points": "Reviewed feedback from recent candidate interviews and hiring decisions.",
+      "Challenges Identified": "Candidate availability misaligned with project timelines.",
+      "Decisions Made": "Focus sourcing efforts on local Cardiff-based talent.",
+      "Next Steps": "Submit updated shortlist within 48 hours."
+    },
+    {
+      "Client Name": "Will Tomlinson",
+      "Account": "Legal & General",
+      "Meeting Date": "2025-06-12",
+      "Meeting Type": "Quarterly Review",
+      "Key Discussion Points": "Reviewed feedback from recent candidate interviews and hiring decisions.",
+      "Challenges Identified": "Gaps between CV evidence and required skill depth.",
+      "Decisions Made": "Simplify submission format to one-page evidence summaries.",
+      "Next Steps": "Refine CVs to better reflect project experience."
+    }
+  ]
+}

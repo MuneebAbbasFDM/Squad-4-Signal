@@ -59,3 +59,19 @@ test("POST /api/chat rejects invalid payloads", async () => {
     assert.match(body.error, /non-empty message/i);
   });
 });
+
+test("POST /api/chat supports /plan command", async () => {
+  await withServer(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: "/plan https://www.linkedin.com/in/becky-davis", crmContext: {} }),
+    });
+
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    const plan = JSON.parse(body.reply);
+    assert.equal(plan.crmSummary.sourceFile, "legal_general_crm_notes_12m.xlsx");
+    assert.ok(plan.meddpiccPlan.economicBuyer.length > 0);
+  });
+});

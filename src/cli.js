@@ -11,6 +11,7 @@ function printHelp() {
   console.log("  /help                         Show commands");
   console.log("  /context <json>               Set CRM context for analysis");
   console.log("  /analyze <transcript>         Analyze a meeting transcript");
+  console.log("  /plan <linkedin-profile-url>  Build MEDDPICC/SPIN meeting plan from dummy CRM data");
   console.log("  /exit                         Exit chatbot");
 }
 
