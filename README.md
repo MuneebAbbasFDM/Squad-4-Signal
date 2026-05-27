@@ -102,8 +102,20 @@ This repository now includes a minimal runnable chatbot prototype:
 - `src/cli.js`  
   Interactive CLI chatbot for local usage.
 
+- `src/server.js`  
+  HTTP server that:
+  - Serves a single-page chatbot frontend
+  - Exposes `POST /api/chat` connected to `MeetingIntelligenceBot.chat(...)`
+  - Supports `/context` updates with JSON payloads to preserve CRM context per browser session
+
+- `public/index.html`, `public/app.js`, `public/styles.css`  
+  Lightweight web chatbot UI with message history, loading/error states, and backend integration.
+
 - `test/meetingIntelligenceBot.test.js`  
   Focused tests for abbreviation normalisation, framework extraction, and risk detection.
+
+- `test/server.test.js`  
+  Focused API tests for chat responses, `/context` handling, and input validation.
 
 ### Run Locally
 
@@ -113,9 +125,17 @@ npm test
 npm start
 ```
 
+Open `http://localhost:3000` to use the chatbot frontend.
+
+For CLI mode:
+
+```bash
+npm run start:cli
+```
+
 ### Chatbot Commands
 
 - `/help`
 - `/context {"opportunityId":"OPP-123","account":"Acme"}`
 - `/analyze <meeting transcript>`
-- `/exit`
+- `/exit` (CLI mode only)
