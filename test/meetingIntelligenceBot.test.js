@@ -12,7 +12,7 @@ test("normaliseText expands supported abbreviations", () => {
   assert.match(result, /need-payoff/i);
 });
 
-test("analyzeMeeting returns captured framework coverage for relevant evidence", () => {
+test("analyzeMeeting returns captured framework coverage for relevant evidence", async () => {
   const bot = new MeetingIntelligenceBot();
   const transcript =
     "Our current process today is manual and causes delays. " +
@@ -23,7 +23,7 @@ test("analyzeMeeting returns captured framework coverage for relevant evidence",
     "Decision criteria include security and integration. " +
     "Next step is a follow-up workshop by Friday.";
 
-  const result = bot.analyzeMeeting({ transcript, crmContext: { opportunityId: "OPP-1" } });
+  const result = await bot.analyzeMeeting({ transcript, crmContext: { opportunityId: "OPP-1" } });
 
   assert.equal(result.meddpicc.metrics.status, "captured");
   assert.equal(result.meddpicc.economicBuyer.status, "captured");
@@ -35,14 +35,14 @@ test("analyzeMeeting returns captured framework coverage for relevant evidence",
   assert.equal(result.crmContext.opportunityId, "OPP-1");
 });
 
-test("analyzeMeeting flags missing economic buyer risk when absent", () => {
+test("analyzeMeeting flags missing economic buyer risk when absent", async () => {
   const bot = new MeetingIntelligenceBot();
   const transcript =
     "Current process is manual and the team has delays. " +
     "The problem is data inconsistency and errors. " +
     "We need a better workflow for handoff.";
 
-  const result = bot.analyzeMeeting({ transcript });
+  const result = await bot.analyzeMeeting({ transcript });
   const riskCodes = result.risks.map((risk) => risk.code);
 
   assert.ok(riskCodes.includes("MISSING_ECONOMIC_BUYER"));

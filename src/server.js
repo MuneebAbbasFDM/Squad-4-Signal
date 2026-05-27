@@ -83,7 +83,7 @@ async function handleChat(req, res) {
       return;
     }
 
-    const reply = bot.chat(message, { crmContext });
+    const reply = await bot.chat(message, { crmContext });
     sendJson(res, 200, { reply, crmContext });
   } catch (error) {
     if (error instanceof SyntaxError) {

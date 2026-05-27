@@ -1,5 +1,7 @@
 "use strict";
 
+const { generateChatResponse, generateAnalysisInsights } = require("./aiEngine");
+
 const MEDDPICC = {
   metrics: {
     keywords: ["metric", "kpi", "roi", "revenue", "cost", "save", "target"],
@@ -205,7 +207,7 @@ function createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage, m
 }
 
 class MeetingIntelligenceBot {
-  analyzeMeeting({ transcript, crmContext = {} }) {
+  async analyzeMeeting({ transcript, crmContext = {} }) {
     if (!transcript || typeof transcript !== "string" || transcript.trim().length === 0) {
       throw new Error("A non-empty transcript string is required.");
     }
@@ -224,7 +226,7 @@ class MeetingIntelligenceBot {
     const missingHighlights = createMissingHighlights(gaps);
     const summary = createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage, missingHighlights);
 
-    return {
+    const structuredResult = {
       summary,
       confidenceScore,
       crmContext,
@@ -236,13 +238,20 @@ class MeetingIntelligenceBot {
       nextSteps: this.suggestNextSteps(gaps),
       evidenceTraceability: "All extracted items include sentence-level evidence from the transcript.",
     };
+
+    const aiInsights = await generateAnalysisInsights(transcript, structuredResult);
+    if (aiInsights) {
+      structuredResult.aiInsights = aiInsights;
+    }
+
+    return structuredResult;
   }
 
   suggestNextSteps(gaps) {
     return [...gaps.meddpicc, ...gaps.spin].map((gap) => gap.followUpQuestion).filter(Boolean);
   }
 
-  chat(message, state = {}) {
+  async chat(message, state = {}) {
     if (!message || typeof message !== "string") {
       return "Please share a message or use /analyze <meeting transcript>.";
     }
@@ -256,8 +265,13 @@ class MeetingIntelligenceBot {
       if (!transcript) {
         return "Please include transcript text after /analyze.";
       }
-      const analysis = this.analyzeMeeting({ transcript, crmContext: state.crmContext || {} });
+      const analysis = await this.analyzeMeeting({ transcript, crmContext: state.crmContext || {} });
       return JSON.stringify(analysis, null, 2);
+    }
+
+    const aiReply = await generateChatResponse(message, state.crmContext || {});
+    if (aiReply) {
+      return aiReply;
     }
 
     return "I can help with discovery intelligence. Use /analyze <meeting transcript> to generate MEDDPICC/SPIN insights.";
