@@ -65,7 +65,7 @@ test("POST /api/chat supports /plan command", async () => {
     const response = await fetch(`${baseUrl}/api/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: "/plan https://www.linkedin.com/in/becky-davis", crmContext: {} }),
+      body: JSON.stringify({ message: "/plan Becky Davis", crmContext: {} }),
     });
 
     assert.equal(response.status, 200);

@@ -52,20 +52,26 @@ test("analyzeMeeting flags missing economic buyer risk when absent", async () =>
   assert.match(result.summary, /Missing MEDDPICC: .*economicBuyer/i);
 });
 
-test("chat /plan asks for linkedin profile when missing", async () => {
+test("chat /plan asks for stakeholder name when missing", async () => {
   const bot = new MeetingIntelligenceBot();
   const reply = await bot.chat("/plan");
-  assert.match(reply, /linkedin profile url/i);
+  assert.match(reply, /stakeholder name/i);
 });
 
 test("chat /plan returns MEDDPICC and SPIN meeting plan", async () => {
   const bot = new MeetingIntelligenceBot();
-  const reply = await bot.chat("/plan https://www.linkedin.com/in/becky-davis");
+  const reply = await bot.chat("/plan Becky Davis");
   const parsed = JSON.parse(reply);
 
-  assert.equal(parsed.linkedinProfile, "https://www.linkedin.com/in/becky-davis");
+  assert.equal(parsed.stakeholder, "Becky Davis");
   assert.equal(parsed.crmSummary.sourceFile, "legal_general_crm_notes_12m.xlsx");
   assert.ok(parsed.meddpiccPlan.metrics.length > 0);
   assert.ok(parsed.spinPlan.problem.length > 0);
   assert.ok(Array.isArray(parsed.meetingAgenda));
+});
+
+test("chat /plan rejects unsupported stakeholder names", async () => {
+  const bot = new MeetingIntelligenceBot();
+  const reply = await bot.chat("/plan Jane Doe");
+  assert.match(reply, /supported stakeholder names/i);
 });

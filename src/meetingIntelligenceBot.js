@@ -1,8 +1,7 @@
 "use strict";
 
 const { generateChatResponse, generateAnalysisInsights, generateMeetingPlanInsights } = require("./aiEngine");
-const { buildCrmSummary } = require("./crmData");
-const { fetchLinkedInProfile } = require("./linkedinClient");
+const { buildCrmSummary, getSupportedStakeholders, matchStakeholderName } = require("./crmData");
 
 const MEDDPICC = {
   metrics: {
@@ -208,21 +207,15 @@ function createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage, m
   ].join(" ");
 }
 
-async function createMeetingPlan(linkedinProfile) {
-  // 1. Fetch LinkedIn profile data (returns null when API key is absent or call fails).
-  const linkedinData = await fetchLinkedInProfile(linkedinProfile);
-
-  // 2. Build CRM summary, using LinkedIn data for improved name matching.
-  const crmSummary = buildCrmSummary(linkedinProfile, linkedinData);
+async function createMeetingPlan(stakeholderName) {
+  const crmSummary = buildCrmSummary(stakeholderName);
 
   const primaryChallenge = crmSummary.topChallenges[0] || "Discovery and delivery alignment risk.";
   const primaryDecision = crmSummary.recentDecisions[0] || "No explicit decision trend captured.";
   const primaryNextStep = crmSummary.likelyNextSteps[0] || "Confirm next-step owner and due date.";
 
-  // 3. Derive contextual labels from LinkedIn data when available.
-  const stakeholderLabel = linkedinData?.fullName || crmSummary.stakeholder || "the stakeholder";
-  const roleLabel = linkedinData?.currentTitle ? ` (${linkedinData.currentTitle})` : "";
-  const companyLabel = linkedinData?.company || crmSummary.account;
+  const stakeholderLabel = crmSummary.stakeholder || stakeholderName || "the stakeholder";
+  const companyLabel = crmSummary.account;
 
   // 4. Build a rule-based plan (used directly when AI is unavailable, and as a
   //    fallback when AI generation fails).
@@ -233,7 +226,7 @@ async function createMeetingPlan(linkedinProfile) {
       decisionCriteria: "Validate hiring-quality, speed, and compliance criteria.",
       decisionProcess: "Map approval flow, timeline, and gate owners.",
       paperProcess: "Confirm legal/procurement process and expected contract checkpoints.",
-      identifiedPain: `Probe urgency behind repeated challenge for ${stakeholderLabel}${roleLabel}: ${primaryChallenge}`,
+      identifiedPain: `Probe urgency behind repeated challenge for ${stakeholderLabel}: ${primaryChallenge}`,
       champion: `Identify who at ${companyLabel} will actively advocate internally and why.`,
       competition: "Test whether incumbents, alternatives, or status quo are preferred.",
     },
@@ -244,7 +237,7 @@ async function createMeetingPlan(linkedinProfile) {
       needPayoff: `Align expected value to likely action: ${primaryNextStep}`,
     },
     meetingAgenda: [
-      `Recap account context for ${stakeholderLabel}${roleLabel} and confirm current priorities.`,
+      `Recap account context for ${stakeholderLabel} and confirm current priorities.`,
       "Run MEDDPICC discovery to close qualification gaps.",
       "Run SPIN questions to deepen business impact and urgency.",
       `Reconfirm or update latest decision trend: ${primaryDecision}`,
@@ -252,8 +245,7 @@ async function createMeetingPlan(linkedinProfile) {
     ],
   };
 
-  // 5. Attempt AI-generated plan that incorporates both LinkedIn and CRM context.
-  const aiPlan = await generateMeetingPlanInsights(linkedinData, crmSummary);
+  const aiPlan = await generateMeetingPlanInsights(null, crmSummary);
 
   const meddpiccPlan = aiPlan?.meddpiccPlan || ruleBasedPlan.meddpiccPlan;
   const spinPlan = aiPlan?.spinPlan || ruleBasedPlan.spinPlan;
@@ -261,16 +253,12 @@ async function createMeetingPlan(linkedinProfile) {
 
   const result = {
     objective: `Prepare for next ${companyLabel} stakeholder meeting with structured MEDDPICC/SPIN discovery.`,
-    linkedinProfile,
+    stakeholder: stakeholderLabel,
     crmSummary,
     meddpiccPlan,
     spinPlan,
     meetingAgenda,
   };
-
-  if (linkedinData) {
-    result.linkedinData = linkedinData;
-  }
 
   if (aiPlan?.aiInsights) {
     result.aiInsights = aiPlan.aiInsights;
@@ -330,7 +318,7 @@ class MeetingIntelligenceBot {
     }
 
     if (message.trim() === "/help") {
-      return "Use /analyze <meeting transcript> for analysis, /plan <linkedin-profile-url> for a MEDDPICC/SPIN meeting plan from legal_general_crm_notes_12m.xlsx data, and /context <json> to attach CRM context.";
+      return `Use /analyze <meeting transcript> for analysis, /plan <stakeholder-name> for a MEDDPICC/SPIN meeting plan from legal_general_crm_notes_12m.xlsx data (${getSupportedStakeholders().join(", ")}), and /context <json> to attach CRM context.`;
     }
 
     if (message.trim().startsWith("/analyze")) {
@@ -343,14 +331,18 @@ class MeetingIntelligenceBot {
     }
 
     if (message.trim().startsWith("/plan")) {
-      const linkedinProfile = message.replace("/plan", "").trim();
-      if (!linkedinProfile) {
-        return "Please provide a LinkedIn profile URL after /plan so I can tailor the meeting plan.";
+      const stakeholderInput = message.replace("/plan", "").trim();
+      const supportedStakeholders = getSupportedStakeholders();
+      if (!stakeholderInput) {
+        return `Please provide a stakeholder name after /plan (${supportedStakeholders.join(", ")}).`;
       }
-      if (!/^https?:\/\/(www\.)?linkedin\.com\/.+/i.test(linkedinProfile)) {
-        return "Please provide a valid LinkedIn profile URL (for example: https://www.linkedin.com/in/example).";
+
+      const matchedStakeholder = matchStakeholderName(stakeholderInput);
+      if (!matchedStakeholder) {
+        return `Please provide one of the supported stakeholder names: ${supportedStakeholders.join(", ")}.`;
       }
-      return JSON.stringify(await createMeetingPlan(linkedinProfile), null, 2);
+
+      return JSON.stringify(await createMeetingPlan(matchedStakeholder), null, 2);
     }
 
     const aiReply = await generateChatResponse(message, state.crmContext || {});
