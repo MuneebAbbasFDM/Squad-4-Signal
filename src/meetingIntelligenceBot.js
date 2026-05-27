@@ -1,7 +1,8 @@
 "use strict";
 
-const { generateChatResponse, generateAnalysisInsights } = require("./aiEngine");
+const { generateChatResponse, generateAnalysisInsights, generateMeetingPlanInsights } = require("./aiEngine");
 const { buildCrmSummary } = require("./crmData");
+const { fetchLinkedInProfile } = require("./linkedinClient");
 
 const MEDDPICC = {
   metrics: {
@@ -207,24 +208,33 @@ function createSummary(confidenceScore, risks, meddpiccCoverage, spinCoverage, m
   ].join(" ");
 }
 
-function createMeetingPlan(linkedinProfile) {
-  const crmSummary = buildCrmSummary(linkedinProfile);
+async function createMeetingPlan(linkedinProfile) {
+  // 1. Fetch LinkedIn profile data (returns null when API key is absent or call fails).
+  const linkedinData = await fetchLinkedInProfile(linkedinProfile);
+
+  // 2. Build CRM summary, using LinkedIn data for improved name matching.
+  const crmSummary = buildCrmSummary(linkedinProfile, linkedinData);
+
   const primaryChallenge = crmSummary.topChallenges[0] || "Discovery and delivery alignment risk.";
   const primaryDecision = crmSummary.recentDecisions[0] || "No explicit decision trend captured.";
   const primaryNextStep = crmSummary.likelyNextSteps[0] || "Confirm next-step owner and due date.";
 
-  return {
-    objective: `Prepare for next ${crmSummary.account} stakeholder meeting with structured MEDDPICC/SPIN discovery.`,
-    linkedinProfile,
-    crmSummary,
+  // 3. Derive contextual labels from LinkedIn data when available.
+  const stakeholderLabel = linkedinData?.fullName || crmSummary.stakeholder || "the stakeholder";
+  const roleLabel = linkedinData?.currentTitle ? ` (${linkedinData.currentTitle})` : "";
+  const companyLabel = linkedinData?.company || crmSummary.account;
+
+  // 4. Build a rule-based plan (used directly when AI is unavailable, and as a
+  //    fallback when AI generation fails).
+  const ruleBasedPlan = {
     meddpiccPlan: {
-      metrics: `Quantify impact linked to: ${primaryChallenge}`,
-      economicBuyer: `Confirm budget authority and access path${crmSummary.stakeholder ? ` via ${crmSummary.stakeholder}` : ""}.`,
+      metrics: `Quantify measurable impact linked to: ${primaryChallenge}`,
+      economicBuyer: `Confirm budget authority and access path for ${companyLabel}${crmSummary.stakeholder ? ` via ${crmSummary.stakeholder}` : ""}.`,
       decisionCriteria: "Validate hiring-quality, speed, and compliance criteria.",
       decisionProcess: "Map approval flow, timeline, and gate owners.",
       paperProcess: "Confirm legal/procurement process and expected contract checkpoints.",
-      identifiedPain: `Probe urgency behind repeated challenge: ${primaryChallenge}`,
-      champion: "Identify who will actively advocate internally and why.",
+      identifiedPain: `Probe urgency behind repeated challenge for ${stakeholderLabel}${roleLabel}: ${primaryChallenge}`,
+      champion: `Identify who at ${companyLabel} will actively advocate internally and why.`,
       competition: "Test whether incumbents, alternatives, or status quo are preferred.",
     },
     spinPlan: {
@@ -234,13 +244,39 @@ function createMeetingPlan(linkedinProfile) {
       needPayoff: `Align expected value to likely action: ${primaryNextStep}`,
     },
     meetingAgenda: [
-      "Recap account context and confirm current priorities.",
+      `Recap account context for ${stakeholderLabel}${roleLabel} and confirm current priorities.`,
       "Run MEDDPICC discovery to close qualification gaps.",
       "Run SPIN questions to deepen business impact and urgency.",
       `Reconfirm or update latest decision trend: ${primaryDecision}`,
       `Agree owner and date for next step: ${primaryNextStep}`,
     ],
   };
+
+  // 5. Attempt AI-generated plan that incorporates both LinkedIn and CRM context.
+  const aiPlan = await generateMeetingPlanInsights(linkedinData, crmSummary);
+
+  const meddpiccPlan = aiPlan?.meddpiccPlan || ruleBasedPlan.meddpiccPlan;
+  const spinPlan = aiPlan?.spinPlan || ruleBasedPlan.spinPlan;
+  const meetingAgenda = aiPlan?.meetingAgenda || ruleBasedPlan.meetingAgenda;
+
+  const result = {
+    objective: `Prepare for next ${companyLabel} stakeholder meeting with structured MEDDPICC/SPIN discovery.`,
+    linkedinProfile,
+    crmSummary,
+    meddpiccPlan,
+    spinPlan,
+    meetingAgenda,
+  };
+
+  if (linkedinData) {
+    result.linkedinData = linkedinData;
+  }
+
+  if (aiPlan?.aiInsights) {
+    result.aiInsights = aiPlan.aiInsights;
+  }
+
+  return result;
 }
 
 class MeetingIntelligenceBot {
@@ -314,7 +350,7 @@ class MeetingIntelligenceBot {
       if (!/^https?:\/\/(www\.)?linkedin\.com\/.+/i.test(linkedinProfile)) {
         return "Please provide a valid LinkedIn profile URL (for example: https://www.linkedin.com/in/example).";
       }
-      return JSON.stringify(createMeetingPlan(linkedinProfile), null, 2);
+      return JSON.stringify(await createMeetingPlan(linkedinProfile), null, 2);
     }
 
     const aiReply = await generateChatResponse(message, state.crmContext || {});
