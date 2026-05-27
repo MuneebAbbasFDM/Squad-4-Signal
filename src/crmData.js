@@ -36,12 +36,12 @@ function normaliseName(value) {
 }
 
 function findRecordsByProfile(linkedinProfile) {
-  const pathSegment = String(linkedinProfile || "")
-    .trim()
-    .toLowerCase()
-    .replace(/\/+$/, "")
-    .split("/")
-    .pop();
+  let profileValue = String(linkedinProfile || "").trim().toLowerCase();
+  while (profileValue.endsWith("/")) {
+    profileValue = profileValue.slice(0, -1);
+  }
+  const lastSlash = profileValue.lastIndexOf("/");
+  const pathSegment = lastSlash >= 0 ? profileValue.slice(lastSlash + 1) : profileValue;
 
   const nameHint = normaliseName(pathSegment.replace(/[0-9]/g, "").replace(/[-_]+/g, " "));
   const records = crmNotes.records || [];
