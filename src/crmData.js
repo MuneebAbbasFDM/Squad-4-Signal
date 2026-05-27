@@ -88,6 +88,29 @@ function buildCrmSummary(linkedinProfile, linkedinData) {
   };
 }
 
+function getSupportedStakeholders() {
+  const records = crmNotes.records || [];
+  return [...new Set(records.map((record) => record["Client Name"]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+}
+
+function matchStakeholderName(input) {
+  const nameHint = normaliseName(input);
+  if (!nameHint) return null;
+
+  const stakeholders = getSupportedStakeholders();
+  const exactMatch = stakeholders.find((name) => normaliseName(name) === nameHint);
+  if (exactMatch) return exactMatch;
+
+  const partialMatches = stakeholders.filter((name) => {
+    const normalised = normaliseName(name);
+    return normalised.includes(nameHint) || nameHint.split(/\s+/).every((token) => normalised.includes(token));
+  });
+
+  return partialMatches.length === 1 ? partialMatches[0] : null;
+}
+
 module.exports = {
   buildCrmSummary,
+  getSupportedStakeholders,
+  matchStakeholderName,
 };
