@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/MuneebAbbasFDM/Squad-4-Signal/issues"
   },
-  "homepage": "https://github.com/MuneebAbbasFDM/Squad-4-Signal#readme"
+  "homepage": "https://github.com/MuneebAbbasFDM/Squad-4-Signal#readme",
+  "dependencies": {
+    "openai": "^6.39.0"
+  }
 }

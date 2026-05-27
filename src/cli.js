@@ -14,9 +14,9 @@ function printHelp() {
   console.log("  /exit                         Exit chatbot");
 }
 
-function runSingleAnalysis(transcript) {
+async function runSingleAnalysis(transcript) {
   try {
-    const result = bot.analyzeMeeting({ transcript, crmContext });
+    const result = await bot.analyzeMeeting({ transcript, crmContext });
     console.log(JSON.stringify(result, null, 2));
   } catch (error) {
     console.error(`Error: ${error.message}`);
@@ -37,7 +37,7 @@ if (process.argv[2] === "--analyze") {
   });
 
   rl.prompt();
-  rl.on("line", (line) => {
+  rl.on("line", async (line) => {
     const input = line.trim();
     if (!input) return rl.prompt();
 
@@ -64,7 +64,7 @@ if (process.argv[2] === "--analyze") {
       return;
     }
 
-    const response = bot.chat(input, { crmContext });
+    const response = await bot.chat(input, { crmContext });
     console.log(response);
     rl.prompt();
   });
