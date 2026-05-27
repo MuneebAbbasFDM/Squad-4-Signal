@@ -1,2 +1,121 @@
 # Squad-4-Signal
-Meeting Assistant
+
+## Sales Meeting Intelligence & Discovery Assistant
+
+This repository defines the product baseline for an AI-powered assistant that standardises how sales meetings are captured, analysed, and reviewed using **MEDDPICC** and **SPIN**.
+
+## Purpose
+
+Provide a single source of truth for discovery quality by:
+- Structuring meeting evidence into a consistent format
+- Improving framework adherence
+- Reducing manual documentation effort
+- Increasing confidence in pipeline visibility
+
+## Target Users
+
+- **Primary:** Account Managers / Sales Executives, Business Development Managers
+- **Secondary:** Sales Managers, Sales Operations, Revenue Leadership
+
+## Core Capabilities
+
+1. **Unified Account Context Engine**
+   - Aggregates account intelligence from permitted sources (CRM, public profile/context, prior interactions)
+   - Produces account summary, stakeholder map, and engagement timeline
+
+2. **Meeting Capture & Transcription**
+   - Captures and transcribes meetings
+   - Normalises abbreviations/shorthand
+   - Attributes statements to speakers
+   - Preserves timestamped evidence
+
+3. **Sales Framework Intelligence Layer**
+   - Maps evidence to MEDDPICC and SPIN categories
+   - Flags weak, inferred, and missing framework elements
+   - Detects inconsistencies between discovery and CRM context
+
+4. **Guided Inline Capture**
+   - Prompts users for missing framework elements
+   - Suggests follow-up questions
+   - Supports one-click confirmation/correction of extracted insights
+
+5. **Gap, Risk & Opportunity Detection**
+   - Identifies risks such as missing Economic Buyer, unquantified pain, unclear decision criteria, unconfirmed Champion, and stalled next steps
+   - Produces confidence score and clear “what’s missing” summary
+
+6. **Stakeholder & Decision Tracking**
+   - Classifies stakeholder roles (economic buyer, influencer, blocker)
+   - Tracks decision criteria/process over time
+   - Tracks commitments and next steps
+
+7. **Managerial Review & Pipeline Insights**
+   - Surfaces MEDDPICC completeness per opportunity
+   - Reports portfolio discovery quality and risk trends
+   - Compares deal velocity with discovery maturity
+
+## Workflow
+
+- **Pre-meeting:** Show account context, stakeholders, open discovery gaps
+- **During meeting:** Capture/transcribe and auto-tag evidence
+- **Post-meeting:** Generate structured MEDDPICC/SPIN summary, risks, and next steps for user confirmation
+- **Ongoing:** Sync approved updates to CRM and support manager coaching/review
+
+## Success Metrics
+
+- % meetings with complete MEDDPICC coverage
+- Reduction in unknown discovery fields
+- Time saved per opportunity on documentation
+- Increased stage-to-stage progression
+- Manager confidence score in pipeline quality
+
+## Non-Functional Requirements
+
+- Low friction for sellers
+- Explainable, evidence-traceable AI
+- Security/compliance with permissions and recording consent
+- Extensible framework model
+- Consistent structure across teams
+
+## Out of Scope (Initial Phase)
+
+- Automated deal forecasting
+- Pricing/contract negotiation intelligence
+- External buyer-facing outputs
+
+## Risks & Mitigations
+
+- **Seller resistance:** Keep guidance inline and assistive
+- **Over-automation risk:** Require human confirmation loop
+- **Data overload:** Prioritise critical gaps and risks
+
+## Prototype Implementation (Current)
+
+This repository now includes a minimal runnable chatbot prototype:
+
+- `src/meetingIntelligenceBot.js`  
+  Core analysis engine that:
+  - Normalises common sales abbreviations (e.g., EB/DC/DP/NP)
+  - Extracts MEDDPICC and SPIN evidence from transcript sentences
+  - Flags missing discovery elements and risk indicators
+  - Produces a confidence score and suggested follow-up questions
+
+- `src/cli.js`  
+  Interactive CLI chatbot for local usage.
+
+- `test/meetingIntelligenceBot.test.js`  
+  Focused tests for abbreviation normalisation, framework extraction, and risk detection.
+
+### Run Locally
+
+```bash
+cd /tmp/workspace/MuneebAbbasFDM/Squad-4-Signal
+npm test
+npm start
+```
+
+### Chatbot Commands
+
+- `/help`
+- `/context {"opportunityId":"OPP-123","account":"Acme"}`
+- `/analyze <meeting transcript>`
+- `/exit`
