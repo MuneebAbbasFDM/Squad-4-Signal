@@ -29,6 +29,8 @@ test("analyzeMeeting returns captured framework coverage for relevant evidence",
   assert.equal(result.meddpicc.economicBuyer.status, "captured");
   assert.equal(result.spin.problem.status, "captured");
   assert.equal(result.spin.implication.status, "captured");
+  assert.ok(Array.isArray(result.missingHighlights.meddpicc));
+  assert.ok(Array.isArray(result.missingHighlights.spin));
   assert.ok(result.confidenceScore > 0);
   assert.equal(result.crmContext.opportunityId, "OPP-1");
 });
@@ -46,4 +48,6 @@ test("analyzeMeeting flags missing economic buyer risk when absent", () => {
   assert.ok(riskCodes.includes("MISSING_ECONOMIC_BUYER"));
   assert.equal(result.meddpicc.economicBuyer.status, "missing");
   assert.ok(result.gaps.meddpicc.some((gap) => gap.field === "economicBuyer"));
+  assert.ok(result.missingHighlights.meddpicc.includes("economicBuyer"));
+  assert.match(result.summary, /Missing MEDDPICC: .*economicBuyer/i);
 });
