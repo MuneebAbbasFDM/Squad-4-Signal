@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Meeting Intelligence Assistant</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="chat-app">
+      <h1>Sales Meeting Intelligence Assistant</h1>
+      <p class="hint">Use /help, /context {"opportunityId":"OPP-123"}, or /analyze ...</p>
+      <section id="messages" class="messages" aria-live="polite"></section>
+      <form id="chat-form" class="chat-form">
+        <input id="chat-input" type="text" placeholder="Type your message..." autocomplete="off" />
+        <button id="send-button" type="submit">Send</button>
+      </form>
+      <p id="status" class="status"></p>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

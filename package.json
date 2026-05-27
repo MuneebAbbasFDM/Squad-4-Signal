@@ -4,7 +4,8 @@
   "description": "This repository defines the product baseline for an AI-powered assistant that standardises how sales meetings are captured, analysed, and reviewed using **MEDDPICC** and **SPIN**.",
   "main": "src/meetingIntelligenceBot.js",
   "scripts": {
-    "start": "node src/cli.js",
+    "start": "node src/server.js",
+    "start:cli": "node src/cli.js",
     "analyze": "node src/cli.js --analyze",
     "test": "node --test"
   },
