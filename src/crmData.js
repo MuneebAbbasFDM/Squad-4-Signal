@@ -35,26 +35,43 @@ function normaliseName(value) {
     .trim();
 }
 
-function findRecordsByProfile(linkedinProfile) {
+function extractNameFromUrl(linkedinProfile) {
   let profileValue = String(linkedinProfile || "").trim().toLowerCase();
   while (profileValue.endsWith("/")) {
     profileValue = profileValue.slice(0, -1);
   }
   const lastSlash = profileValue.lastIndexOf("/");
   const pathSegment = lastSlash >= 0 ? profileValue.slice(lastSlash + 1) : profileValue;
-
-  const nameHint = normaliseName(pathSegment.replace(/[0-9]/g, "").replace(/[-_]+/g, " "));
-  const records = crmNotes.records || [];
-  const matched = nameHint
-    ? records.filter((record) => normaliseName(record["Client Name"]).includes(nameHint))
-    : [];
-
-  return matched.length > 0 ? matched : records;
+  return normaliseName(pathSegment.replace(/[0-9]/g, "").replace(/[-_]+/g, " "));
 }
 
-function buildCrmSummary(linkedinProfile) {
-  const filtered = sortByDateDesc(findRecordsByProfile(linkedinProfile));
-  const recent = filtered.slice(0, 3);
+function findRecordsByProfile(linkedinProfile, linkedinData) {
+  const records = crmNotes.records || [];
+
+  // Prefer the full name from LinkedIn data; fall back to URL slug extraction.
+  const nameHint = linkedinData?.fullName
+    ? normaliseName(linkedinData.fullName)
+    : extractNameFromUrl(linkedinProfile);
+
+  if (!nameHint) return records;
+
+  // Full-name exact match first.
+  const exact = records.filter((record) => normaliseName(record["Client Name"]) === nameHint);
+  if (exact.length > 0) return exact;
+
+  // Partial match (any token from the name hint appears in the client name).
+  const tokens = nameHint.split(/\s+/).filter(Boolean);
+  const partial = records.filter((record) => {
+    const clientName = normaliseName(record["Client Name"]);
+    return tokens.some((token) => clientName.includes(token));
+  });
+
+  return partial.length > 0 ? partial : records;
+}
+
+function buildCrmSummary(linkedinProfile, linkedinData) {
+  const filtered = sortByDateDesc(findRecordsByProfile(linkedinProfile, linkedinData));
+  const recent = filtered.slice(0, 5);
 
   return {
     sourceFile: crmNotes.sourceFile,
@@ -62,10 +79,12 @@ function buildCrmSummary(linkedinProfile) {
     stakeholder: filtered[0]?.["Client Name"] || null,
     recordsAnalysed: filtered.length,
     recentMeetingDates: recent.map((record) => record["Meeting Date"]).filter(Boolean),
+    recentMeetingTypes: [...new Set(recent.map((record) => record["Meeting Type"]).filter(Boolean))],
     keyDiscussionPoints: [...new Set(recent.map((record) => record["Key Discussion Points"]).filter(Boolean))],
     topChallenges: countBy(filtered, "Challenges Identified").slice(0, 3),
     recentDecisions: countBy(filtered, "Decisions Made").slice(0, 3),
     likelyNextSteps: countBy(filtered, "Next Steps").slice(0, 3),
+    allRecords: filtered,
   };
 }
 
