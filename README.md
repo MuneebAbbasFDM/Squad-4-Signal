@@ -87,3 +87,35 @@ Provide a single source of truth for discovery quality by:
 - **Seller resistance:** Keep guidance inline and assistive
 - **Over-automation risk:** Require human confirmation loop
 - **Data overload:** Prioritise critical gaps and risks
+
+## Prototype Implementation (Current)
+
+This repository now includes a minimal runnable chatbot prototype:
+
+- `src/meetingIntelligenceBot.js`  
+  Core analysis engine that:
+  - Normalises common sales abbreviations (e.g., EB/DC/DP/NP)
+  - Extracts MEDDPICC and SPIN evidence from transcript sentences
+  - Flags missing discovery elements and risk indicators
+  - Produces a confidence score and suggested follow-up questions
+
+- `src/cli.js`  
+  Interactive CLI chatbot for local usage.
+
+- `test/meetingIntelligenceBot.test.js`  
+  Focused tests for abbreviation normalisation, framework extraction, and risk detection.
+
+### Run Locally
+
+```bash
+cd /tmp/workspace/MuneebAbbasFDM/Squad-4-Signal
+npm test
+npm start
+```
+
+### Chatbot Commands
+
+- `/help`
+- `/context {"opportunityId":"OPP-123","account":"Acme"}`
+- `/analyze <meeting transcript>`
+- `/exit`
